@@ -1,0 +1,22 @@
+langchain==0.0.348
+PyPDF2==3.0.1
+python-dotenv==1.0.0
+streamlit==1.27.0
+streamlit-feedback==0.1.2
+openai==0.27.6
+faiss-cpu==1.7.4
+altair==4
+tiktoken==0.4.0
+google-cloud-bigquery==3.12.0
+google-cloud-storage==2.12.0
+pygsheets==2.0.6
+python-decouple==3.8
+psycopg2==2.9.9
+pgvector==0.2.4
+# uncomment to use huggingface llms
+# huggingface-hub==0.14.1
+torch
+# uncomment to use instructor embeddings
+# InstructorEmbedding==1.0.1
+# sentence-transformers==2.2.2
+transformers
