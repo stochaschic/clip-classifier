@@ -142,8 +142,8 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, width=400)
 
-    text_input_string = st.text_input('Choose some contrasting labels for this image - seperate labels with a comma \
-        e.g. "dog, cat" as this is how labels are split', 'a picture containing trigger warning,' )
+    text_input_string = st.text_input('Choose some contrasting labels for this image - seperate labels with a semicolon \
+        e.g. "dog;cat" as this is how labels are split', 'A picture containing trigger warning (sexual content, bullying,drug and alcohol,mental health issue);a picture;a photo;an illustration' )
     labels = [i for i in text_input_string.split(",")]
     predictions = classify_images(labels, image, processor, model, tokenizer)
     df = results_to_dataframe(predictions, labels)
