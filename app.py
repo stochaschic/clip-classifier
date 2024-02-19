@@ -136,15 +136,36 @@ def plot_results(df, y_label, x_label, color_discrete_sequence):
 clip_model = 'openai/clip-vit-base-patch32'
 model, processor, tokenizer = download_clip_model(clip_model) # load the model, processor and tokeniser - this is cached
 
+placeholder_options = {
+    "Option 1": 'A picture containing trigger warning (sexual content, bullying, drug and alcohol, mental health issue);a picture;a photo;an illustration',
+    "Option 2": 'A picture containing trigger warning;'
+}
+
+
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
     # image = Image.open('data/sample_images/kucing_putih.jpeg') # open the image
     image = Image.open(uploaded_file)
     st.image(image, width=400)
+    # Initialize or update the session state for the selected option
+    if 'selected_option' not in st.session_state:
+        st.session_state.selected_option = "Option 1"  # Default value
 
-    text_input_string = st.text_input('Choose some contrasting labels for this image - seperate labels with a semicolon \
-        e.g. "dog;cat" as this is how labels are split', 'A picture containing trigger warning (sexual content, bullying,drug and alcohol,mental health issue);a picture;a photo;an illustration' )
-    labels = [i for i in text_input_string.split(",")]
+    # Dropdown to select placeholder option
+    selected_option = st.selectbox(
+        "Choose a prompt option",
+        options=list(placeholder_options.keys()),
+        index=list(placeholder_options.keys()).index(st.session_state.selected_option),
+        on_change=lambda: setattr(st.session_state, 'selected_option', selected_option)
+    )
+    # Update session state with the current selection
+    st.session_state.selected_option = selected_option
+
+    text_input_string = st.text_input(
+        "Choose some contrasting labels for this image - separate labels with a semicolon e.g. 'dog;cat'. This is how labels are split",
+        placeholder_options[st.session_state.selected_option]
+        )
+    labels = [i for i in text_input_string.split(";")]
     predictions = classify_images(labels, image, processor, model, tokenizer)
     df = results_to_dataframe(predictions, labels)
     st.subheader('Predicted probabilities')
